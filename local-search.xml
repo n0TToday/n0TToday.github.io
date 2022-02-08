@@ -4,6 +4,60 @@
   
   
   <entry>
+    <title>LeetCode - 020.Valid Parentheses</title>
+    <link href="/2022/01/30/LeetCode-020.ValidParentheses/"/>
+    <url>/2022/01/30/LeetCode-020.ValidParentheses/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p>Given a string <code>s</code> containing just the characters <code>(</code> <code>)</code> <code>[</code> <code>]</code> <code>&#123;</code> <code>&#125;</code>, determine if the input string is valid.</p><span id="more"></span><blockquote><p>给定一个只包含 ( ) [ ] { } 的字符串，判断是否有效。</p></blockquote><p>An input string is valid if:</p><blockquote><p>如果字符串有效：</p></blockquote><ol><li><p>Open brackets must be closed by the same type of brackets.</p><blockquote><p>括号必须用相同类型的括号闭合。</p></blockquote></li><li><p>Open brackets must be closed in the correct order.</p><blockquote><p>括号必须以正确的顺序闭合。</p></blockquote></li></ol><h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs txt">Input: s = &quot;()&quot;<br>Output: true<br></code></pre></td></tr></table></figure><h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs txt">Input: s = &quot;()[]&#123;&#125;&quot;<br>Output: true<br></code></pre></td></tr></table></figure><h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3:"></a>Example 3:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs txt">Input: s = &quot;(]&quot;<br>Output: false<br></code></pre></td></tr></table></figure><h3 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints:"></a>Constraints:</h3><ul><li><code>1 &lt;= s.length &lt;= 10^4</code></li><li><code>s</code> consists of parentheses only <code>&#39;()[]&#123;&#125;&#39;</code>.</li></ul><h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>记得当时学习数据结构的时候，括号问题就曾经出现在练习题还是教材书中，左括号与右括号配对应该是符合先进后出的特性的，队列和栈中应该使用栈实现是比较好的方法。</p><p>但是 <code>C#</code> 学习的程度不深，没有学习 栈(Stack) 的使用，于是第一遍自己做出了下面这个比较麻烦的方法：</p><h3 id="2-1-利用KVP模拟栈"><a href="#2-1-利用KVP模拟栈" class="headerlink" title="2.1 利用KVP模拟栈"></a>2.1 利用KVP模拟栈</h3><p>因为一开始不知道栈怎么用，而第一遍又想自己思考着解决，于是利用了前几天刚学的 <code>键值对 Dictionary</code> 模拟栈来操作，毕竟也有 <code>ADD</code> 之类的方法嘛~</p><ul><li><p>将字符串转为 <code>char[]</code> 类型。</p><blockquote><p>这一步好像不需要，直接遍历 string 也可以。</p></blockquote></li><li><p>判断数组长度是否为空 或 是否为奇数。</p><ul><li>如果是空的或者是奇数就结束，返回判断值。</li></ul></li><li><p>新建 <code>Dictionary</code>。</p></li><li><p>遍历数组。</p><ul><li>如果是 <code>左括号</code> ，添加进键值对。</li><li>如果是 <code>右括号</code> ，取出最近添加进 KVP 的值，比较是否为一对。<ul><li>是，在 KVP 中 <code>Remove</code> 掉这个右括号，继续遍历下一个。</li><li>否，结束遍历，返回判断值。</li></ul></li></ul></li><li><p>遍历完后，判断 KVP 是否为空。</p><ul><li>如果不为空，则有未配对的括号，返回 <code>False</code> 。</li></ul></li></ul><blockquote><p>写完自己的这个方法后，忽然发现好像不需要用键值对，简单的一维数组也能解决 = =</p></blockquote><h3 id="2-2-栈解决"><a href="#2-2-栈解决" class="headerlink" title="2.2 栈解决"></a>2.2 栈解决</h3><p>栈解决这个问题就方便了很多，毕竟有现成的方法。另外还在评论区发现了更便利的方法，减少了判断次数，属实让我这个小白大开眼界了：</p><ul><li><p>判断字符串长度是否为空 或 是否为奇数。</p></li><li><p>创建一个类型为 <code>char</code> 的新栈。</p></li><li><p>遍历字符串。</p><ul><li><p>如果为左括号，则添加 <strong>对应的右括号</strong> 进栈。</p></li><li><p>如果是右括号，则 <strong>栈顶出栈</strong> 同时判断是否与出栈元素相等。</p><blockquote><p>这里真的有点妙，这种自己没想到的方法的惊喜和冲击让我更爱刷 LeetCode 了~</p></blockquote><ul><li>另外如果这是栈内为空，则说明有不匹配括号。</li></ul></li></ul></li><li><p>遍历完成后，返回 <strong>栈内是否为空的判断结果</strong></p><blockquote><p>这里也很妙~ <code>return stack.Count == 0;</code></p></blockquote></li></ul><h3 id="2-3-字符串法"><a href="#2-3-字符串法" class="headerlink" title="2.3 字符串法"></a>2.3 字符串法</h3><p>一个更另类和取巧的思路，可惜照着实现了一遍，性能有些差劲。</p><ul><li><p>照例判断 空和奇数。</p></li><li><p><code>while</code> 判断字符串是否包含 <code>[]</code> <code>()</code> <code>&#123;&#125;</code> 。</p><blockquote><p>只要是成对的字符串，一定包含以上三个之一。</p></blockquote><ul><li>如果有，则将其 <code>replace</code> 为空。</li></ul></li><li><p>返回字符串是否为空。</p></li></ul><blockquote><p>不得不说这个方法真的简单和聪明，不知道什么时候能自己想出来，啧。</p></blockquote><h2 id="3-题解"><a href="#3-题解" class="headerlink" title="3. 题解"></a>3. 题解</h2><h3 id="3-1-模拟栈"><a href="#3-1-模拟栈" class="headerlink" title="3.1 模拟栈"></a>3.1 模拟栈</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c#">public class Solution &#123;<br>    public bool IsValid(string s) &#123;<br>        bool IsValid = false;<br>        char[] vs = s.ToCharArray();<br>        if(vs.Length == 0 || vs.Length % 2 != 0) return IsValid;<br>        Dictionary&lt;int, char&gt; map = new Dictionary&lt;int, char&gt;();<br>        int j = 1;<br>        for (int i = 0; i &lt; vs.Length; i++)<br>        &#123;<br>            if (vs[i] == &#x27;(&#x27; || vs[i] == &#x27;&#123;&#x27; || vs[i] == &#x27;[&#x27;) map.Add(j++, vs[i]);<br>            else<br>            &#123;<br>                int k = --j;<br>                if (!(k &gt; 0))<br>                &#123;<br>                    IsValid = false;<br>                    break;<br>                &#125;<br>                if (map[k] == &#x27;(&#x27; &amp;&amp; vs[i] == &#x27;)&#x27;) IsValid = true;<br>                else if (map[k] == &#x27;&#123;&#x27; &amp;&amp; vs[i] == &#x27;&#125;&#x27;) IsValid = true;<br>                else if (map[k] == &#x27;[&#x27; &amp;&amp; vs[i] == &#x27;]&#x27;) IsValid = true;<br>                else<br>                &#123;<br>                    IsValid = false;<br>                    break;<br>                &#125;<br>                map.Remove(j);<br>            &#125;<br>        &#125;<br>        if (map.Count &gt; 0) IsValid = false;<br>        return IsValid;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h3 id="3-2-栈"><a href="#3-2-栈" class="headerlink" title="3.2 栈"></a>3.2 栈</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c#">public class Solution &#123;<br>    public bool IsValid(string s) &#123;<br>        if (s.Length == 0 || s.Length % 2 != 0) return false;<br>        Stack&lt;char&gt; stack = new Stack&lt;char&gt;();<br>        foreach (char c in s)<br>        &#123;<br>            if (c == &#x27;(&#x27;) stack.Push(&#x27;)&#x27;);<br>            else if (c == &#x27;&#123;&#x27;) stack.Push(&#x27;&#125;&#x27;);<br>            else if (c == &#x27;[&#x27;) stack.Push(&#x27;]&#x27;);<br>            else if (stack.Count == 0 || c != stack.Pop()) return false;<br>        &#125;<br>        return stack.Count == 0;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h3 id="3-3-字符串替换"><a href="#3-3-字符串替换" class="headerlink" title="3.3 字符串替换"></a>3.3 字符串替换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c#">public class Solution &#123;<br>    public bool IsValid(string s) &#123;<br>        if (s.Length == 0 || s.Length % 2 != 0) return false;<br>        while (s.IndexOf(&quot;&#123;&#125;&quot;) != -1 || s.IndexOf(&quot;()&quot;) != -1 || s.IndexOf(&quot;[]&quot;) != -1)<br>        &#123;<br>            s = s.Replace(&quot;&#123;&#125;&quot;, &quot;&quot;)<br>                .Replace(&quot;[]&quot;, &quot;&quot;)<br>                .Replace(&quot;()&quot;, &quot;&quot;);<br>        &#125;<br>        return s == &quot;&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="4-我学到的"><a href="#4-我学到的" class="headerlink" title="4. 我学到的"></a>4. 我学到的</h2><ul><li><code>C#</code> 中 <code>栈 Stack</code> 的用法。<ul><li><code>Stack&lt;type&gt; stack = new Stack&lt;type&gt;()</code></li><li><code>stack.Push()</code></li><li><code>stack.Pop()</code></li><li><code>stack.Count()</code></li></ul></li><li>返回 <code>bool</code> 类型的结果时可以直接返回 判断表达式。</li><li>字符串的部分操作类似数组。<ul><li><code>String.Length</code></li><li>可以直接遍历字符串。</li><li><code>String.IndexOf()</code></li><li><code>String.Replace()</code></li></ul></li><li>还有吗？</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>LeetCode</tag>
+      
+      <tag>算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>LeetCode - 001.Two Sum</title>
+    <link href="/2022/01/29/LeetCode-001.TwoSum/"/>
+    <url>/2022/01/29/LeetCode-001.TwoSum/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to</em> <code>target</code>.</p><span id="more"></span><blockquote><p>给定一个整型数组和一个整数目标值，返回和为目标值的两个数的数组下标。</p></blockquote><p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p><blockquote><p>每个输入只有一个唯一的答案，并且不会用到相同的两个元素。</p></blockquote><p>You can return the answer in any order.</p><blockquote><p>可以以任何顺序返回答案。</p></blockquote><h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs txt">Input: nums = [2,7,11,15], target = 9<br>Output: [0,1]<br>Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].<br></code></pre></td></tr></table></figure><h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs txt">Input: nums = [3,2,4], target = 6<br>Output: [1,2]<br></code></pre></td></tr></table></figure><h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs txt">Input: nums = [3,3], target = 6<br>Output: [0,1]<br></code></pre></td></tr></table></figure><h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>注册 LeetCode 后的第一道题，读完题目后的第一想法就是 <code>for循环</code> 不就完事了。后来写完一翻评论区，果然小白就是小白啊~哈哈哈。</p><h3 id="2-1-枚举法"><a href="#2-1-枚举法" class="headerlink" title="2.1 枚举法"></a>2.1 枚举法</h3><p>枚举法应该是最容易想到的一个思路，也是时间复杂度最高的一个方法：</p><ul><li>通过双层 for循环来遍历出数组中的每一种组合方式并将他们求和。</li><li>与目标值比较得出结果返回。</li><li>时间复杂度：O(n^2^)</li><li>空间复杂度：O(1)</li></ul><h3 id="2-2-哈希表法"><a href="#2-2-哈希表法" class="headerlink" title="2.2 哈希表法"></a>2.2 哈希表法</h3><p>这个方法是评论区看到的：</p><ul><li>新建一个哈希表，将数组中的第一个数和下标添加进哈希表中。</li><li>添加第二个数x 时，将 <code>target - x</code> 与哈希表中已存在的数查找。<ul><li>如果存在，则说明 <code>x</code> 与 查找到的数 即为答案，返回这两个数的下标即可。</li><li>若不存在，则将这个数 <code>x</code> 与其下标添加进哈希表中，继续判断下一个数。</li></ul></li><li>时间复杂度：O(n)</li><li>空间复杂度：O(n)</li></ul><h2 id="3-题解"><a href="#3-题解" class="headerlink" title="3. 题解"></a>3. 题解</h2><h3 id="3-1-枚举法"><a href="#3-1-枚举法" class="headerlink" title="3.1 枚举法"></a>3.1 枚举法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c#">public class Solution &#123;<br>    public int[] TwoSum(int[] nums, int target) &#123;<br>        // 双层 for 循环即可<br>        for (int i = 0; i &lt; nums.Length; i++)<br>        &#123;<br>            for(int j = i + 1; j &lt; nums.Length; j++)&#123;<br>                if(target == (nums[i] + nums [j])) return new int[] &#123;i,j&#125;;<br>            &#125;<br>        &#125;<br>        return new int[] &#123; 0, 0 &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h3 id="3-2-哈希表法"><a href="#3-2-哈希表法" class="headerlink" title="3.2 哈希表法"></a>3.2 哈希表法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c#">public class Solution &#123;<br>    public int[] TwoSum(int[] nums, int target) &#123;<br>        // 新建一个哈希表<br>        // 据说官方推荐使用 Dictionary，但是我在文档里找到了 Hashtable，故先用这个写了。<br>        Hashtable ht = new Hashtable();<br>        // 因为题目要两个数，所以第一个数必定先进哈希表。<br>        ht.Add(nums[0], 0);<br>        // 从第二个数开始判断<br>        for (int i = 1; i &lt; nums.Length; i++)<br>        &#123;<br>            int v = target - nums[i];<br>            if (ht.ContainsKey(v))<br>            &#123;<br>                return new int[] &#123; (int)ht[v], i &#125;;<br>            &#125;<br>            else if (!ht.ContainsKey(nums[i])) ht.Add(nums[i], i);<br>        &#125;<br>        return new int[] &#123; 0, 0 &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="4-我学到的"><a href="#4-我学到的" class="headerlink" title="4. 我学到的"></a>4. 我学到的</h2><ol><li><p>哈希表（键值对） <code>Hashtable</code> / <code>Dictionary</code></p><ul><li><p>创建：<code>Hashtable ht = new Hashtable()</code></p></li><li><p>判断是否包含：<code>ht.ContainsKey()</code></p></li><li><p>向表中添加：<code>ht.Add()</code></p></li></ul></li><li><p>通过提升 <code>空间复杂度</code> 来降低 <code>时间复杂度</code>。</p></li><li><p>尽量减少 <code>for</code> 循环的使用。</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>LeetCode</tag>
+      
+      <tag>算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Windows Terminal 配置及美化记录</title>
     <link href="/2022/01/26/Windows-Terminal-Config/"/>
     <url>/2022/01/26/Windows-Terminal-Config/</url>
@@ -134,11 +188,11 @@
     
     <tags>
       
+      <tag>算法</tag>
+      
       <tag>学习笔记</tag>
       
       <tag>数据结构</tag>
-      
-      <tag>算法</tag>
       
     </tags>
     
@@ -163,11 +217,11 @@
     
     <tags>
       
+      <tag>算法</tag>
+      
       <tag>学习笔记</tag>
       
       <tag>数据结构</tag>
-      
-      <tag>算法</tag>
       
     </tags>
     
